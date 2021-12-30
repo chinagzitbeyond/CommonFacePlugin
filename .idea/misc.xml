@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/workpalces/project/commonPlugin/app/src/main/res/layout/activity_main.xml" value="0.16197916666666667" />
+        <entry key="..\:/workpalces/project/commonPlugin/face_recognition/src/main/res/drawable/wbcf_custom_auth_btn_checked.xml" value="0.2171875" />
+        <entry key="..\:/workpalces/project/commonPlugin/face_recognition/src/main/res/drawable/wbcf_custom_long_tip_bg.xml" value="0.2171875" />
+        <entry key="..\:/workpalces/project/commonPlugin/face_recognition/src/main/res/layout/activity_spinner.xml" value="0.20104166666666667" />
       </map>
     </option>
   </component>
