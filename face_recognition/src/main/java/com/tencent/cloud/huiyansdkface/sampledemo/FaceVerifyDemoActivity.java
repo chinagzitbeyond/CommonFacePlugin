@@ -68,6 +68,11 @@ public class FaceVerifyDemoActivity extends Activity {
     private String licence="TYJkE1Fg5ZIUDJ6IJlnXP0m5VaSbk0QlNigY916S4mtFhAhP0nPPpKwHwMXbchUh6Fr/NRh8/BRIk5m6Go2FhDrmGC3MKQ2X3oL+QdlEixYiNhvJnq67BW/Fexuzt9ftMujEi9CuNl0iUcPPNPstHQxeIArjgN9zMzB/QiAd03N84Vze6CdIQutKgA3VOdyPAwBkHLtXXMnfnEm5peBHenuRhpbLp4cRobcr3ifcAV+UVx3IZUqz17Lh/sG+rCpUbXBHfhJQaGWP1Ptx8RFpTSrZMbC0skGRMg4iK1aotRyhpEbCQwfIQNkp8igAftcpuheoFGxIiolm7327A4QfFg==";
     private String compareType;
 
+    public interface  FaceCallBackStr{
+        public String getCallBackStr(String str);
+    }
+    private FaceCallBackStr faceCallBackStr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -371,6 +376,9 @@ public class FaceVerifyDemoActivity extends Activity {
                                         "; similarity=" + result.getSimilarity() + "userImageString=" + result.getUserImageString());
                                 if (!isShowSuccess) {
                                     Toast.makeText(FaceVerifyDemoActivity.this, "刷脸成功", Toast.LENGTH_SHORT).show();
+                                    if(null != faceCallBackStr){
+                                        faceCallBackStr.getCallBackStr(result.getUserImageString());
+                                    }
                                     //跳转到主界面Activity中
                                     finish();
 
