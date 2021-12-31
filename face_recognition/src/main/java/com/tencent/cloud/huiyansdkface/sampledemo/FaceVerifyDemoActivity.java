@@ -71,7 +71,7 @@ public class FaceVerifyDemoActivity extends Activity {
     public interface  FaceCallBackStr{
         public String getCallBackStr(String str);
     }
-    private FaceCallBackStr faceCallBackStr;
+    public FaceCallBackStr faceCallBackStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
