@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tencent.cloud.huiyansdkface.sampledemo.FaceUtils;
 import com.tencent.cloud.huiyansdkface.sampledemo.FaceVerifyDemoActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,14 +15,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this,FaceVerifyDemoActivity.class));
-        FaceVerifyDemoActivity.FaceCallBackStr faceCallBackStr = new FaceVerifyDemoActivity.FaceCallBackStr() {
-            @Override
-            public String getCallBackStr(String str) {
-                Log.d(MainActivity.class.getName(),str);
-                return str;
-            }
-        };
+//        startActivity(new Intent(this,FaceVerifyDemoActivity.class));
+//        FaceVerifyDemoActivity.FaceCallBackStr faceCallBackStr = new FaceVerifyDemoActivity.FaceCallBackStr() {
+//            @Override
+//            public String getCallBackStr(String str) {
+//                Log.d(MainActivity.class.getName(),str);
+//                return str;
+//            }
+//        };
+        FaceUtils faceUtils = new FaceUtils();
+        faceUtils.getFaceStr(this,new FaceVerifyDemoActivity());
 
     }
 }
