@@ -191,7 +191,8 @@ public class FaceVerifyDemoActivity extends Activity {
 
         final String order = "testReflect" + System.currentTimeMillis();
         //此处为demo使用体验，实际生产请使用控制台给您分配的appid
-        final String appId = "TIDAacCm";
+//        final String appId = "TIDAacCm";
+        final String appId = "IDASKxzd";
 
         if (compareType.equals(WbCloudFaceContant.NONE)) {
             Log.d(TAG, "仅活体检测不需要faceId，直接拉起sdk");
@@ -273,7 +274,7 @@ public class FaceVerifyDemoActivity extends Activity {
     private void checkOnId(String mode) {
         //此处为demo使用体验，实际生产请使用控制台给您分配的appId
 //        String appId = "TIDAacCm";
-        String appId = "sObqiFiSu4cxwvXkETakEdh58MAqcU8UoZRmUKrlTkHnSGISwqWL02h0eGDDgWBZ";
+        String appId = "IDASKxzd";
 
         if (compareType.equals(WbCloudFaceContant.ID_CARD)) {
             name = nameEt.getText().toString().trim();
