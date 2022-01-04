@@ -65,7 +65,8 @@ public class FaceVerifyDemoActivity extends Activity {
     //此处为demo模拟，请输入32位随机数
     private String nonce = "52014832029547845621032584562012";
     //此处为demo使用，由合作方提供包名申请，统一下发
-    private String licence="TYJkE1Fg5ZIUDJ6IJlnXP0m5VaSbk0QlNigY916S4mtFhAhP0nPPpKwHwMXbchUh6Fr/NRh8/BRIk5m6Go2FhDrmGC3MKQ2X3oL+QdlEixYiNhvJnq67BW/Fexuzt9ftMujEi9CuNl0iUcPPNPstHQxeIArjgN9zMzB/QiAd03N84Vze6CdIQutKgA3VOdyPAwBkHLtXXMnfnEm5peBHenuRhpbLp4cRobcr3ifcAV+UVx3IZUqz17Lh/sG+rCpUbXBHfhJQaGWP1Ptx8RFpTSrZMbC0skGRMg4iK1aotRyhpEbCQwfIQNkp8igAftcpuheoFGxIiolm7327A4QfFg==";
+//    private String licence="TYJkE1Fg5ZIUDJ6IJlnXP0m5VaSbk0QlNigY916S4mtFhAhP0nPPpKwHwMXbchUh6Fr/NRh8/BRIk5m6Go2FhDrmGC3MKQ2X3oL+QdlEixYiNhvJnq67BW/Fexuzt9ftMujEi9CuNl0iUcPPNPstHQxeIArjgN9zMzB/QiAd03N84Vze6CdIQutKgA3VOdyPAwBkHLtXXMnfnEm5peBHenuRhpbLp4cRobcr3ifcAV+UVx3IZUqz17Lh/sG+rCpUbXBHfhJQaGWP1Ptx8RFpTSrZMbC0skGRMg4iK1aotRyhpEbCQwfIQNkp8igAftcpuheoFGxIiolm7327A4QfFg==";
+    private String licence="Obc8pfTeccNIENqCK47E+w8mq0jPHIuHs/a2UrCf+3qj2EBPC5LEzTixK5CdQcpkjU0gVNZ2II78S7j9WC6XIfQpGHPW5gRn0kJDGDEC4KkVw6Ahv9c3loYcQ8zK1G7y2qIRHRIHMNz6nVaOwxIIgVX+jQOJJ+eDuNNIAdYwVKYBMY23jBjz1e6ELBDOf8cM4MA2JFz5eTCA9Mll5tWg84fOv8FFDH6cYAZma3TzowrQxEwBJkepwpyo1JbGvg9H/zIQxsJkcDP6EbZYy+tOtjTLAdUAX9l+abh3GWN5axyW1armqQPPKBrKL70oaXYeE/mb7zETwz3eS0bz47jysg==";
     private String compareType;
 
     public interface  FaceCallBackStr{
@@ -271,7 +272,8 @@ public class FaceVerifyDemoActivity extends Activity {
 
     private void checkOnId(String mode) {
         //此处为demo使用体验，实际生产请使用控制台给您分配的appId
-        String appId = "TIDAacCm";
+//        String appId = "TIDAacCm";
+        String appId = "sObqiFiSu4cxwvXkETakEdh58MAqcU8UoZRmUKrlTkHnSGISwqWL02h0eGDDgWBZ";
 
         if (compareType.equals(WbCloudFaceContant.ID_CARD)) {
             name = nameEt.getText().toString().trim();
