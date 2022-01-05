@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tencent.cloud.huiyansdkface.sampledemo.FaceVerifyDemoActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private String secret = "";
-    private String appId = "";
-    private String licence="";
+
+    private String secret;
+    private String appId;
+    private String licence;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

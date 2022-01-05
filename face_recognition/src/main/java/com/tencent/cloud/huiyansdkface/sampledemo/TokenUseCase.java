@@ -28,7 +28,7 @@ public class TokenUseCase {
         //WeHttp封装的配置
         myOkHttp.config()
                 //配置超时,单位:s
-                .timeout(20, 20, 20)
+                .timeout(2000, 2000, 2000)
                 //添加PIN
                 .log(WeLog.Level.BODY);
     }
