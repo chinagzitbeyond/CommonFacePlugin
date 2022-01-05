@@ -3,6 +3,7 @@ package com.tencent.cloud.huiyansdkface.sampledemo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import com.tencent.cloud.huiyansdkface.facelight.api.WbCloudFaceContant;
 import com.tencent.cloud.huiyansdkface.facelight.api.WbCloudFaceVerifySdk;
 import com.tencent.cloud.huiyansdkface.facelight.api.listeners.WbCloudFaceVerifyLoginListener;
@@ -29,7 +32,10 @@ import com.tencent.cloud.huiyansdkface.wehttp2.WeLog;
 import com.tencent.cloud.huiyansdkface.wehttp2.WeOkHttp;
 import com.tencent.cloud.huiyansdkface.wehttp2.WeReq;
 
+
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class FaceVerifyDemoActivity extends Activity {
     private static final String TAG = "FaceVerifyDemoActivity";
@@ -55,31 +61,49 @@ public class FaceVerifyDemoActivity extends Activity {
     private String language;
 
     private AppHandler appHandler;
+    private TokenUseCase tokenUseCase;
+    private AuthUseCase authUseCase;
     private SignUseCase signUseCase;
 
     private String name;
     private String id;
+    private String secret;
+    private String grant_type = "client_credential";
+    private String version = "1.0.0";
+    private String appId;
+    private String type = "SIGN";
+
 
     //此处为demo模拟，请输入标识唯一用户的userId
     private String userId = "WbFaceVerifyAll" + System.currentTimeMillis();
     //此处为demo模拟，请输入32位随机数
     private String nonce = "52014832029547845621032584562012";
     //此处为demo使用，由合作方提供包名申请，统一下发
-//    private String licence="TYJkE1Fg5ZIUDJ6IJlnXP0m5VaSbk0QlNigY916S4mtFhAhP0nPPpKwHwMXbchUh6Fr/NRh8/BRIk5m6Go2FhDrmGC3MKQ2X3oL+QdlEixYiNhvJnq67BW/Fexuzt9ftMujEi9CuNl0iUcPPNPstHQxeIArjgN9zMzB/QiAd03N84Vze6CdIQutKgA3VOdyPAwBkHLtXXMnfnEm5peBHenuRhpbLp4cRobcr3ifcAV+UVx3IZUqz17Lh/sG+rCpUbXBHfhJQaGWP1Ptx8RFpTSrZMbC0skGRMg4iK1aotRyhpEbCQwfIQNkp8igAftcpuheoFGxIiolm7327A4QfFg==";
-    private String licence="Obc8pfTeccNIENqCK47E+w8mq0jPHIuHs/a2UrCf+3qj2EBPC5LEzTixK5CdQcpkjU0gVNZ2II78S7j9WC6XIfQpGHPW5gRn0kJDGDEC4KkVw6Ahv9c3loYcQ8zK1G7y2qIRHRIHMNz6nVaOwxIIgVX+jQOJJ+eDuNNIAdYwVKYBMY23jBjz1e6ELBDOf8cM4MA2JFz5eTCA9Mll5tWg84fOv8FFDH6cYAZma3TzowrQxEwBJkepwpyo1JbGvg9H/zIQxsJkcDP6EbZYy+tOtjTLAdUAX9l+abh3GWN5axyW1armqQPPKBrKL70oaXYeE/mb7zETwz3eS0bz47jysg==";
+    private String licence;
     private String compareType;
+    private String token;
+    private String model;
+    private String order = "testReflect" + System.currentTimeMillis();
+    private String face;
+    private String userImageString;
 
-    public interface  FaceCallBackStr{
-        public String getCallBackStr(String str);
-    }
-    public FaceCallBackStr faceCallBackStr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
 
+        Intent intent = getIntent();
+        this.secret = intent.getStringExtra("secret");
+        this.appId = intent.getStringExtra("appId");
+        this.licence = intent.getStringExtra("licence");
+
+
+
         appHandler = new AppHandler(this);
+        tokenUseCase = new TokenUseCase(appHandler);
+        authUseCase = new AuthUseCase(appHandler);
         signUseCase = new SignUseCase(appHandler);
 
         initViews();
@@ -185,6 +209,34 @@ public class FaceVerifyDemoActivity extends Activity {
                 .log(WeLog.Level.BODY);
     }
 
+    public void getAuth(String mode,String sign){
+        Log.e(TAG, "mode:"+mode+":token:"+token);
+        openCloudFaceService(FaceVerifyStatus.Mode.GRADE, appId, order, sign, face);
+    }
+
+    public void getToken(String mode,String token){
+
+        this.token = token;
+        this.model = mode;
+        signUseCase.execute(mode, appId, token, type, version,nonce,userId);
+
+    }
+
+    public static String sign(List<String> values, String ticket) {
+        if (values == null) {
+            throw new NullPointerException("values is null");
+        }
+        values.removeAll(Collections.singleton(null));// remove null
+        values.add(ticket);
+        java.util.Collections.sort(values);
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : values) {
+            sb.append(s);
+        }
+        return Hashing.sha1().hashString(sb, Charsets.UTF_8).toString().toUpperCase();
+    }
+
     //特别注意：此方法仅供demo使用，合作方开发时需要自己的后台提供接口获得faceId
     public void getFaceId(final FaceVerifyStatus.Mode mode, final String sign) {
         Log.d(TAG, "start getFaceId");
@@ -192,7 +244,7 @@ public class FaceVerifyDemoActivity extends Activity {
         final String order = "testReflect" + System.currentTimeMillis();
         //此处为demo使用体验，实际生产请使用控制台给您分配的appid
 //        final String appId = "TIDAacCm";
-        final String appId = "IDASKxzd";
+
 
         if (compareType.equals(WbCloudFaceContant.NONE)) {
             Log.d(TAG, "仅活体检测不需要faceId，直接拉起sdk");
@@ -200,6 +252,7 @@ public class FaceVerifyDemoActivity extends Activity {
             return;
         }
 
+//        String url = "https://miniprogram-kyc.tencentcloudapi.com/api/server/getAdvFaceId?orderNo="+order;
         String url = "https://miniprogram-kyc.tencentcloudapi.com/api/server/getfaceid";
 
         Log.d(TAG, "get faceId url=" + url);
@@ -210,12 +263,16 @@ public class FaceVerifyDemoActivity extends Activity {
         param.version = "1.0.0";
         param.userId = userId;
         param.sign = sign;
+        param.sourcePhotoType = "1";
+        param.sourcePhotoStr = "";
+        param.nonce = nonce;
+
         if (compareType.equals(WbCloudFaceContant.ID_CARD)) {
             Log.d(TAG, "身份证对比" + url);
             param.name = name;
             param.idNo = id;
         }
-
+        Log.e("AppHandler", "请求:[" + param.toJson() + "]," );
         GetFaceId.requestExec(myOkHttp, url, param, new WeReq.Callback<GetFaceId.GetFaceIdResponse>() {
             @Override
             public void onStart(WeReq weReq) {
@@ -245,7 +302,10 @@ public class FaceVerifyDemoActivity extends Activity {
                             String faceId = result.faceId;
                             if (!TextUtils.isEmpty(faceId)) {
                                 Log.d(TAG, "faceId请求成功:" + faceId);
-                                openCloudFaceService(mode, appId, order, sign, faceId);
+//                                openCloudFaceService(mode, appId, order, sign, faceId);
+                                face = faceId;
+                                authUseCase.execute(model,appId,token,"NONCE",version,nonce,userId);
+
                             } else {
                                 progressDlg.dismiss();
                                 Log.e(TAG, "faceId为空");
@@ -291,7 +351,7 @@ public class FaceVerifyDemoActivity extends Activity {
                         Log.i(TAG, "Param right!");
                         Log.i(TAG, "Called Face Verify Sdk MODE=" + mode);
                         progressDlg.show();
-                        signUseCase.execute(mode, appId, userId, nonce);
+                        tokenUseCase.execute(appId, secret, grant_type, version,mode);
                     } else {
                         Toast.makeText(FaceVerifyDemoActivity.this, "用户证件号错误", Toast.LENGTH_SHORT).show();
                         return;
@@ -311,9 +371,10 @@ public class FaceVerifyDemoActivity extends Activity {
             id = "";
             Log.i(TAG, "Called Face Verify Sdk!" + mode);
             progressDlg.show();
-            signUseCase.execute(mode, appId, userId, nonce);
+            tokenUseCase.execute(appId, secret, grant_type, version,mode);
         }
     }
+
 
     //拉起刷脸sdk
     public void openCloudFaceService(FaceVerifyStatus.Mode mode, String appId, String order, String sign, String faceId) {
@@ -329,6 +390,7 @@ public class FaceVerifyDemoActivity extends Activity {
                 sign,
                 mode,
                 licence);
+        Log.e(TAG,faceId+":"+order+":"+appId+":"+"1.0.0"+nonce+":"+userId+":"+sign+":"+mode+":"+licence);
 
         data.putSerializable(WbCloudFaceContant.INPUT_DATA, inputData);
         data.putString(WbCloudFaceContant.LANGUAGE, language);
@@ -345,12 +407,12 @@ public class FaceVerifyDemoActivity extends Activity {
         //是否播放提示音，默认不播放
         data.putBoolean(WbCloudFaceContant.PLAY_VOICE, isPlayVoice);
         //识别阶段合作方定制提示语,可不传，此处为demo演示
-        data.putString(WbCloudFaceContant.CUSTOMER_TIPS_LIVE, "仅供体验使用 请勿用于投产!");
+        data.putString(WbCloudFaceContant.CUSTOMER_TIPS_LIVE, "人脸识别使用!");
         //上传阶段合作方定制提示语,可不传，此处为demo演示
-        data.putString(WbCloudFaceContant.CUSTOMER_TIPS_UPLOAD, "仅供体验使用 请勿用于投产!");
+        data.putString(WbCloudFaceContant.CUSTOMER_TIPS_UPLOAD, "人脸识别使用!");
         //合作方长定制提示语，可不传，此处为demo演示
         //如果需要展示长提示语，需要邮件申请
-        data.putString(WbCloudFaceContant.CUSTOMER_LONG_TIP, "本demo提供的appId仅用于体验，实际生产请使用控制台给您分配的appId！");
+        data.putString(WbCloudFaceContant.CUSTOMER_LONG_TIP, "人脸识别使用！");
         //设置选择的比对类型  默认为公安网纹图片对比
         //公安网纹图片比对 WbCloudFaceContant.ID_CRAD
         //仅活体检测  WbCloudFaceContant.NONE
@@ -375,16 +437,16 @@ public class FaceVerifyDemoActivity extends Activity {
                         //得到刷脸结果
                         if (result != null) {
                             if (result.isSuccess()) {
+                                userImageString = result.getUserImageString();
                                 Log.d(TAG, "刷脸成功! Sign=" + result.getSign() + "; liveRate=" + result.getLiveRate() +
-                                        "; similarity=" + result.getSimilarity() + "userImageString=" + result.getUserImageString());
+                                        "; similarity=" + result.getSimilarity() + "userImageString=" + userImageString);
                                 if (!isShowSuccess) {
                                     Toast.makeText(FaceVerifyDemoActivity.this, "刷脸成功", Toast.LENGTH_SHORT).show();
-                                    if(null != faceCallBackStr){
-                                        faceCallBackStr.getCallBackStr(result.getUserImageString());
-                                    }
                                     //跳转到主界面Activity中
+                                    Intent intent = new Intent();
+                                    intent.putExtra("userImageStr",userImageString);
+                                    setResult(2,intent);
                                     finish();
-
                                 }
                             } else {
                                 WbFaceError error = result.getError();
@@ -412,6 +474,7 @@ public class FaceVerifyDemoActivity extends Activity {
                         userId = "WbFaceVerifyREF" + System.currentTimeMillis();
                         //刷脸结束后，释放资源
                         WbCloudFaceVerifySdk.getInstance().release();
+
                     }
                 });
             }
@@ -460,4 +523,8 @@ public class FaceVerifyDemoActivity extends Activity {
             }
         }
     }
+
+
+
+
 }

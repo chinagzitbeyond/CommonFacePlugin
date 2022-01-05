@@ -9,25 +9,18 @@ import com.tencent.cloud.huiyansdkface.wehttp2.WeLog;
 import com.tencent.cloud.huiyansdkface.wehttp2.WeOkHttp;
 import com.tencent.cloud.huiyansdkface.wehttp2.WeReq;
 
-import org.json.JSONArray;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-/**
- * Created by leoraylei on 16/9/19.
- */
-
-public class SignUseCase {
-    private static final String TAG = "SignUseCase";
+public class AuthUseCase {
+    private static final String TAG = "AuthUseCase";
 
     private AppHandler handler;
 
-    public SignUseCase(AppHandler handler) {
+    public AuthUseCase(AppHandler handler) {
         this.handler = handler;
         initHttp();
     }
@@ -40,14 +33,14 @@ public class SignUseCase {
         myOkHttp.config()
                 //配置超时,单位:s
                 .timeout(20, 20, 20)
-                        //添加PIN
+                //添加PIN
                 .log(WeLog.Level.BODY);
     }
 
     public void execute(String mode, String appId, String access_token, String type, String version, String nonceStr, String userId) {
-        final String url = getUrl(appId, access_token, type, version);
+        final String url = getUrl(appId, access_token, type, version,userId);
 
-        requestExec(url, new WeReq.Callback<SignResponse>() {
+        requestExec(url, new WeReq.Callback<AuthUseCase.SignResponse>() {
             @Override
             public void onStart(WeReq weReq) {
 
@@ -64,7 +57,7 @@ public class SignUseCase {
             }
 
             @Override
-            public void onSuccess(WeReq weReq, SignResponse signResponse) {
+            public void onSuccess(WeReq weReq, AuthUseCase.SignResponse signResponse) {
                 if (signResponse != null) {
                     String sign = signResponse.tickets[0].value;
                     processBody(mode, sign, appId, nonceStr, userId, version);
@@ -92,28 +85,29 @@ public class SignUseCase {
             values.add(nonceStr);
             Log.d(TAG, "appId:" + appId + ":userId:" + userId + ":version:" + version + ":nonceStr:"+ nonceStr);
             String sign = sign(values, ticket);
-            handler.sendSignSuccess(mode, sign);
+            handler.sendAuthSuccess(mode, sign);
         }
     }
 
     public static class SignResponse implements Serializable {
-        public Tickets[] tickets;     //签名
+        public AuthUseCase.Tickets[] tickets;     //签名
     }
     public static class Tickets implements Serializable{
         public String value;
     }
 
-    public void requestExec(String url, WeReq.Callback<SignResponse> callback) {
+    public void requestExec(String url, WeReq.Callback<AuthUseCase.SignResponse> callback) {
         myOkHttp.get(url).execute(callback);
     }
 
-    private String getUrl(String appId, String access_token, String type, String version) {
+    private String getUrl(String appId, String access_token, String type, String version, String userId) {
         //特别注意：此方法仅供demo使用，合作方开发时需要自己的后台提供接口生成签名
 //        final String s = "https://miniprogram-kyc.tencentcloudapi.com" + "/ems-partner/cert/signature?appid=" + appId + "&nonce=" + nonce + "&userid=" + userId;
-        final String s = "https://miniprogram-kyc.tencentcloudapi.com/api/oauth2/api_ticket?app_id="+appId+"&access_token="+access_token+"&type="+type+"&version="+version;
+        final String s = "https://miniprogram-kyc.tencentcloudapi.com/api/oauth2/api_ticket?app_id="+appId+"&access_token="+access_token+"&type="+type+"&version="+version+"&user_id="+userId;
         Log.d(TAG, "get sign url=" + s);
         return s;
     }
+
     public static String sign(List<String> values, String ticket) {
         if (values == null) {
             throw new NullPointerException("values is null");
@@ -128,5 +122,6 @@ public class SignUseCase {
         }
         return Hashing.sha1().hashString(sb, Charsets.UTF_8).toString().toUpperCase();
     }
+
 
 }

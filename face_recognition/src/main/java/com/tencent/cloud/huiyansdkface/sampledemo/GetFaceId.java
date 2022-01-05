@@ -22,12 +22,15 @@ public class GetFaceId {
         public String sourcePhotoType;
         public String version = "1.0.0";
         public String sign;
+        public String nonce;
 
         public String toJson() {
             Map<String, String> map = new HashMap<>();
             map.put("webankAppId", webankAppId);
             map.put("orderNo", orderNo);//设备信息（IOS/Android）
             map.put("name", name);//接口版本号，默认1.0.0
+            map.put("nonce", nonce);//接口版本号，默认1.0.0
+
             map.put("idNo", idNo);//	订单号，由合作方上送，每次唯一
             map.put("userId", userId);//faceId
             map.put("sourcePhotoStr", sourcePhotoStr);

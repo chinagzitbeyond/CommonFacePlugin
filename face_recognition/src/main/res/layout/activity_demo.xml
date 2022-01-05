@@ -14,13 +14,13 @@
         android:layout_height="48dp">
 
         <ImageView
-            android:visibility="invisible"
             android:id="@+id/wbcf_demo_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/wbcf_demo_setting" />
+            android:src="@mipmap/wbcf_demo_setting"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <ImageView
@@ -47,7 +47,7 @@
         android:layout_below="@id/sit_env_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
-        android:text="供体验使用！"
+        android:text="人脸识别使用！"
         android:textColor="#ffffff"
         android:textSize="20sp" />
 

@@ -9,14 +9,15 @@ public class FaceUtils {
     public String getFaceStr(Context context, FaceVerifyDemoActivity faceVerifyDemoActivity){
 
         context.startActivity(new Intent(context,faceVerifyDemoActivity.getClass()));
-        new FaceVerifyDemoActivity.FaceCallBackStr() {
-            @Override
-            public String getCallBackStr(String str) {
-                faceStr = str;
-                return str;
-            };
-        };
-        return faceStr;
+//        new FaceVerifyDemoActivity.FaceCallBackStr() {
+//            @Override
+//            public String getCallBackStr(String str) {
+//                faceStr = str;
+//                return str;
+//            };
+//        };
+//        return faceStr;
+        return null;
     }
 
 }

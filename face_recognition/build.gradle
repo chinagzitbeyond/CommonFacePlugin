@@ -65,4 +65,5 @@ dependencies {
     implementation(name: 'WbCloudFaceLiveSdk-v4.4.1.2-1f740b1e', ext: 'aar')
     //2. 云common SDK
     implementation(name: 'WbCloudNormal-v5.1.0-f9eb035', ext: 'aar')
+    implementation 'com.google.guava:guava:28.2-jre'
 }
