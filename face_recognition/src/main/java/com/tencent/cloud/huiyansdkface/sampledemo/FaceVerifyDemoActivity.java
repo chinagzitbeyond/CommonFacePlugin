@@ -124,6 +124,9 @@ public class FaceVerifyDemoActivity extends Activity {
 
         settingIv = (ImageView) findViewById(R.id.wbcf_demo_setting);
         sitEnv = (TextView) findViewById(R.id.sit_env_logo);
+
+        
+
     }
 
     private void initProgress() {

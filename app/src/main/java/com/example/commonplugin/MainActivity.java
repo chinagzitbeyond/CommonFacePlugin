@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private String secret;
     private String appId;
     private String licence;
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
