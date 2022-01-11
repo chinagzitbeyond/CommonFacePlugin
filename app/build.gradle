@@ -6,8 +6,8 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.xinchen.hulatumall"
-//        applicationId "com.xinchen.daweihumall"
+//        applicationId "com.xinchen.hulatumall"
+        applicationId "com.xinchen.daweihumall"
         minSdk 21
         targetSdk 30
         versionCode 2

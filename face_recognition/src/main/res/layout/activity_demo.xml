@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_weight="1"
-            android:text="体验人脸识别" />
+            android:text="人脸识别" />
 
     </LinearLayout>
 

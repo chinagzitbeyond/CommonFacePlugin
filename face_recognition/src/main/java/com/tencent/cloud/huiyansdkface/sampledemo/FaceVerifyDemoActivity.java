@@ -75,7 +75,9 @@ public class FaceVerifyDemoActivity extends Activity {
 
 
     //此处为demo模拟，请输入标识唯一用户的userId
-    private String userId = "WbFaceVerifyAll" + System.currentTimeMillis();
+//    private String userId = "WbFaceVerifyAll" + System.currentTimeMillis();
+//    private String userId = "WbFaceVerifyAll111111" ;
+    private String userId;
     //此处为demo模拟，请输入32位随机数
     private String nonce = "52014832029547845621032584562012";
     //此处为demo使用，由合作方提供包名申请，统一下发
@@ -98,6 +100,7 @@ public class FaceVerifyDemoActivity extends Activity {
         this.secret = intent.getStringExtra("secret");
         this.appId = intent.getStringExtra("appId");
         this.licence = intent.getStringExtra("licence");
+        this.userId = intent.getStringExtra("userId");
 
 
 
@@ -167,6 +170,8 @@ public class FaceVerifyDemoActivity extends Activity {
         //仅活体检测  WbCloudFaceContant.NONE
         //默认公安网纹图片对比
         compareType = WbCloudFaceContant.ID_CARD;
+        //限制活体检测
+//        compareType = WbCloudFaceContant.NONE;
 
         settingIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,7 +256,8 @@ public class FaceVerifyDemoActivity extends Activity {
 
         if (compareType.equals(WbCloudFaceContant.NONE)) {
             Log.d(TAG, "仅活体检测不需要faceId，直接拉起sdk");
-            openCloudFaceService(mode, appId, order, sign, "");
+//            openCloudFaceService(mode, appId, order, sign, "");
+            authUseCase.execute(model,appId,token,"NONCE",version,nonce,userId);
             return;
         }
 
@@ -441,13 +447,15 @@ public class FaceVerifyDemoActivity extends Activity {
                         if (result != null) {
                             if (result.isSuccess()) {
                                 userImageString = result.getUserImageString();
+
                                 Log.d(TAG, "刷脸成功! Sign=" + result.getSign() + "; liveRate=" + result.getLiveRate() +
                                         "; similarity=" + result.getSimilarity() + "userImageString=" + userImageString);
                                 if (!isShowSuccess) {
                                     Toast.makeText(FaceVerifyDemoActivity.this, "刷脸成功", Toast.LENGTH_SHORT).show();
                                     //跳转到主界面Activity中
                                     Intent intent = new Intent();
-                                    intent.putExtra("userImageStr",userImageString);
+//                                    intent.putExtra("userImageStr",userImageString);
+                                    intent.putExtra("userImageStr",id);
                                     setResult(2,intent);
                                     finish();
                                 }
