@@ -7,6 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.xinchen.hulatumall"
+//        applicationId "com.xinchen.daweihumall"
         minSdk 21
         targetSdk 30
         versionCode 2

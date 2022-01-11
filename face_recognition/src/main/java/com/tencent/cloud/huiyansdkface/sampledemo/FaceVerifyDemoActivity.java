@@ -337,7 +337,7 @@ public class FaceVerifyDemoActivity extends Activity {
     private void checkOnId(String mode) {
         //此处为demo使用体验，实际生产请使用控制台给您分配的appId
 //        String appId = "TIDAacCm";
-        String appId = "IDASKxzd";
+
 
         if (compareType.equals(WbCloudFaceContant.ID_CARD)) {
             name = nameEt.getText().toString().trim();

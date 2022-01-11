@@ -11,10 +11,12 @@ import com.tencent.cloud.huiyansdkface.sampledemo.FaceVerifyDemoActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    //呼拉兔
     private String secret;
     private String appId;
     private String licence;
-    
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
